@@ -4,10 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { ChakraProvider } from '@chakra-ui/react'
+import BudgetProvider from './state/BudgetContext';
+
+import { RecoilRoot } from 'recoil';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+    <ChakraProvider>
+      <BudgetProvider>
+        <App />
+      </BudgetProvider>
+    </ChakraProvider>
+    </RecoilRoot>
   </React.StrictMode>
 );
 
