@@ -1,8 +1,10 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import { getBudgetMonths, getBudgetItemsForBudgetMonth } from "../server";
+import { getBudgetMonths, getBudgetItemsForBudgetMonth, getExpensesForBudgetId } from "../server";
 
-import { budgetItems, budgetMonthSelected, budgetMonths } from "./atoms";
+import { budgetItems, budgetMonthSelected, budgetMonths, budgetItemId, budgetItemIdExpenses } from "./atoms";
+
+import { useDisclosure } from "@chakra-ui/react";
 
 export const BudgetContext = React.createContext();
 
@@ -10,6 +12,11 @@ function BudgetProvider({ children }) {
   const [budgetMonthItems, initBudgetMonths] = useRecoilState(budgetMonths);
   const [budgetSelected, setBudgetSelected] = useRecoilState(budgetMonthSelected);
   const [items, setItems] = useRecoilState(budgetItems);
+
+  const [itemId, setItemId] = useRecoilState(budgetItemId);
+  const [expenses, setExpenses] = useRecoilState(budgetItemIdExpenses);
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const fetchBudgetData = async (id = 0) => {
     const data = await getBudgetItemsForBudgetMonth(id);
@@ -30,13 +37,37 @@ function BudgetProvider({ children }) {
     fetchData().then((d) => initBudgetMonths(d.data));
   }, []);
 
+
+  const fetchExpenses = async () => {
+    const data = await getExpensesForBudgetId(itemId.id)
+    return data
+  }
+
+  React.useEffect(() => {
+    fetchExpenses().then((d) => {
+      setExpenses(d.data)
+    });
+  }, [itemId.id]);
+
+
   return (
     <BudgetContext.Provider
       value={{
         budgets: budgetMonthItems,
         setBudgetSelected,
         budgetId: budgetSelected,
-        items
+        items,
+        drawer: {
+          isOpen,
+          onOpen,
+          onClose
+        },
+        budgetItem: {
+          currentBudgetItem: itemId,
+          setItemId,
+          expenses,
+          setExpenses
+        }
       }}
     >
       {children}

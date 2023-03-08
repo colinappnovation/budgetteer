@@ -13,6 +13,8 @@ export async function getBudgetItemsForBudgetMonth(id = 0) {
     return useSupabase.from('Budget').select().eq('BudgetMonth', id)
 }
 
-
+export async function getExpensesForBudgetId(id=0) {
+  return useSupabase.from('Expenses').select().eq('BudgetItem', id)
+}
 
 export default useSupabase;

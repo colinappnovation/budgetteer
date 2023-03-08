@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 export const budgetMonthSelected = atom({
   key: "budgetMonthSelected", // unique ID (with respect to other atoms/selectors)
@@ -15,3 +15,27 @@ export const budgetItems = atom({
   default: [], // default value (aka initial value)
 });
 
+export const budgetItemId = atom({
+  key: "budgetItemId",
+  default: {id: 0, name: ''},
+})
+
+export const budgetItemIdExpenses = atom({
+  key: "budgetItemIdExpenses",
+  default: [],
+})
+
+// ---- Selectors
+
+const initialValue = 0;
+export const totalOfExpenses = selector({
+  key: 'FilteredTodoList',
+  get: ({get}) => {
+    const exp = get(budgetItemIdExpenses);
+    const sumWithInitial = exp.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      initialValue
+    );
+    return sumWithInitial
+  },
+});

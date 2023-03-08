@@ -19,7 +19,7 @@ function Header() {
   }
 
   return (
-    <Container>
+
       <HStack>
         <Box className="App">
           <Heading>Budgets</Heading>
@@ -41,7 +41,7 @@ function Header() {
           <Button>Add Budget Month</Button>
         </ButtonGroup>
       </HStack>
-    </Container>
+
   );
 }
 
