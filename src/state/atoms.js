@@ -17,25 +17,28 @@ export const budgetItems = atom({
 
 export const budgetItemId = atom({
   key: "budgetItemId",
-  default: {id: 0, name: ''},
-})
+  default: { id: 0, name: "" },
+});
 
 export const budgetItemIdExpenses = atom({
   key: "budgetItemIdExpenses",
   default: [],
-})
+});
 
 // ---- Selectors
 
-const initialValue = 0;
 export const totalOfExpenses = selector({
-  key: 'FilteredTodoList',
-  get: ({get}) => {
+  key: "totalOfExpenses",
+  get: ({ get }) => {
     const exp = get(budgetItemIdExpenses);
+
     const sumWithInitial = exp.reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      initialValue
+      (accumulator, currentValue) => accumulator + currentValue.Amt,
+      0
     );
-    return sumWithInitial
+
+    console.log("total from reducer", sumWithInitial);
+
+    return sumWithInitial;
   },
 });

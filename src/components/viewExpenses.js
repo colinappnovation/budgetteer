@@ -18,9 +18,13 @@ import {
   Tag,
   Highlight,
   Box,
+  Divider,
 } from "@chakra-ui/react";
 import { BudgetContext } from "../state/BudgetContext";
 import { totalOfExpenses } from "../state/atoms";
+
+import { useRecoilValue } from 'recoil'
+import { formatCurrency } from "../utils";
 
 function ViewExpensesDrawer() {
   const ctx = React.useContext(BudgetContext);
@@ -62,11 +66,7 @@ function ViewExpensesDrawer() {
                       <Th>{e.Name}</Th>
                       <Th>{e.Description}</Th>
                       <Th>
-                        {" "}
-                        {Intl.NumberFormat(undefined, {
-                          style: "currency",
-                          currency: "GBP",
-                        }).format(e.Amt)}
+                        {formatCurrency(e.Amt)}
                       </Th>
                     </Tr>
                   );
@@ -74,8 +74,10 @@ function ViewExpensesDrawer() {
               </Tbody>
             </Table>
           </TableContainer>
-          <Box>
-            Total Expenses: {total}
+          <Box mt="5">
+            <Divider/>
+              <strong>Total Expenses: {formatCurrency(total)}</strong>
+            <Divider/>
           </Box>
         </DrawerBody>
       </DrawerContent>
