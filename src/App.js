@@ -6,6 +6,7 @@ import { Container, Grid, Box } from "@chakra-ui/react";
 
 import Header from "../src/components/header";
 import BudgetItem from "../src/components/BudgetItem";
+
 import ViewExpensesDrawer from "./components/viewExpenses";
 
 function App() {

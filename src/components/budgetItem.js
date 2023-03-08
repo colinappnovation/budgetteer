@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React, { Suspense } from "react";
 
 import {
   Card,
@@ -21,6 +21,9 @@ import {
 import { BudgetContext } from "../state/BudgetContext";
 
 import { GridItem } from '@chakra-ui/react'
+import { formatCurrency } from "../utils";
+import BudgetTotal from "./totalBudget";
+
 
 function BudgetItem() {
   const ctx = React.useContext(BudgetContext)
@@ -41,19 +44,13 @@ function BudgetItem() {
           <Stat>
             <StatLabel>Spent</StatLabel>
             <StatNumber>
-              {Intl.NumberFormat(undefined, {
-                style: "currency",
-                currency: "GBP",
-              }).format(50)}
+              <Suspense fallback="Loading...">
+                <BudgetTotal id={b.id} />
+              </Suspense>
             </StatNumber>
             <StatHelpText>
               <StatArrow type="increase" />
-              50% [Budget:{" "}
-              {Intl.NumberFormat(undefined, {
-                style: "currency",
-                currency: "GBP",
-              }).format(b.Max)}
-              ]
+              50% [Budget: {formatCurrency(b.Max)}]
             </StatHelpText>
           </Stat>
         </CardBody>

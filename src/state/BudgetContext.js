@@ -38,8 +38,8 @@ function BudgetProvider({ children }) {
   }, []);
 
 
-  const fetchExpenses = async () => {
-    const data = await getExpensesForBudgetId(itemId.id)
+  const fetchExpenses = async (id = itemId.id) => {
+    const data = await getExpensesForBudgetId(id)
     return data
   }
 
@@ -66,7 +66,8 @@ function BudgetProvider({ children }) {
           currentBudgetItem: itemId,
           setItemId,
           expenses,
-          setExpenses
+          setExpenses,
+          fetchExpenses
         }
       }}
     >
