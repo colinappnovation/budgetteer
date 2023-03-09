@@ -61,7 +61,7 @@ function ViewExpensesDrawer() {
                 </Tr>
               </Thead>
               <Tbody>
-                {expenses.map((e) => {
+                {expenses && expenses.map((e) => {
                   return (
                     <Tr>
                       <Td>{e.Name}</Td>

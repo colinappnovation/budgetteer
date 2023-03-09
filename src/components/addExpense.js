@@ -35,9 +35,14 @@ function AddExpense() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    console.log("Entering into submit handler now!");
-    const { error } = await addExpense({ name, desc, amt, id: budgetSelected.id });
-    console.log('err', error)
+    const { error } = await addExpense({
+      name,
+      desc,
+      amt,
+      id: budgetSelected.id,
+      budgetMonth: ctx.budgetId,
+    });
+    console.log('error 😱', error)
     ctx.modal.onCloseExpense();
   }
 
@@ -48,29 +53,29 @@ function AddExpense() {
         <ModalHeader>Add an Expense for {budgetSelected.name}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <form onSubmit={handleSubmit} id='addExpenseForm'>
-          <FormControl isRequired>
-            <FormLabel>Name</FormLabel>
-            <Input
-              type="text"
-              onChange={(event) => setName(event.currentTarget.value)}
-            />
-            <FormHelperText>Provide name of the expense.</FormHelperText>
+          <form onSubmit={handleSubmit} id="addExpenseForm">
+            <FormControl isRequired>
+              <FormLabel>Name</FormLabel>
+              <Input
+                type="text"
+                onChange={(event) => setName(event.currentTarget.value)}
+              />
+              <FormHelperText>Provide name of the expense.</FormHelperText>
 
-            <FormLabel>Description</FormLabel>
-            <Input
-              type="text"
-              onChange={(event) => setDesc(event.currentTarget.value)}
-            />
-            <FormHelperText>Provide the expense description.</FormHelperText>
+              <FormLabel>Description</FormLabel>
+              <Input
+                type="text"
+                onChange={(event) => setDesc(event.currentTarget.value)}
+              />
+              <FormHelperText>Provide the expense description.</FormHelperText>
 
-            <FormLabel>Amt</FormLabel>
-            <Input
-              type="text"
-              onChange={(event) => setAmt(event.currentTarget.value)}
-            />
-            <FormHelperText>Provide the expense amount.</FormHelperText>
-          </FormControl>
+              <FormLabel>Amt</FormLabel>
+              <Input
+                type="text"
+                onChange={(event) => setAmt(event.currentTarget.value)}
+              />
+              <FormHelperText>Provide the expense amount.</FormHelperText>
+            </FormControl>
           </form>
         </ModalBody>
         <ModalFooter>

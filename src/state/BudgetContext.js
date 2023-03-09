@@ -2,9 +2,11 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import { getBudgetMonths, getBudgetItemsForBudgetMonth, getExpensesForBudgetId } from "../server";
 
-import { budgetItems, budgetMonthSelected, budgetMonths, budgetItemId, budgetItemIdExpenses } from "./atoms";
+import { budgetItems, budgetMonthSelected, budgetMonths, budgetItemId, budgetItemIdExpenses, totalSpendAndBudgeted} from "./atoms";
 
 import { useDisclosure } from "@chakra-ui/react";
+
+import { getPredictedBudgetTotal, getTotalExpenses } from "../server";
 
 export const BudgetContext = React.createContext();
 
@@ -20,12 +22,15 @@ function BudgetProvider({ children }) {
 
   const { isOpen: isOpenExpense, onOpen: onOpenExpense, onClose: onCloseExpense } = useDisclosure();
 
+  const [runningTotal, setRunningTotal] = useRecoilState(totalSpendAndBudgeted);
+
   const fetchBudgetData = async (id = 0) => {
     const data = await getBudgetItemsForBudgetMonth(id);
     return data;
   };
 
   React.useEffect(() => {
+    console.log('Budget Selected...')
     fetchBudgetData(budgetSelected).then((d) => setItems(d.data));
   }, [budgetSelected]);
 
@@ -36,20 +41,44 @@ function BudgetProvider({ children }) {
   };
 
   React.useEffect(() => {
+    console.log('Get Months...');
     fetchData().then((d) => initBudgetMonths(d.data));
   }, []);
 
 
-  const fetchExpenses = async (id = itemId.id) => {
-    const data = await getExpensesForBudgetId(id)
+  const fetchExpenses = async (id = itemId.id, mid = budgetSelected) => {
+    const data = await getExpensesForBudgetId(id, mid)
     return data
   }
 
   React.useEffect(() => {
+    console.log('Get Expenses');
     fetchExpenses().then((d) => {
       setExpenses(d.data)
     });
   }, [itemId.id]);
+
+  // Totals stats
+
+  async function getAllTotals(id) {
+    const exps = await getTotalExpenses(id);
+    const sum = exps.data?.reduce((acc, cv) => acc + cv.Amt, 0);
+
+    const bg = await getPredictedBudgetTotal(id);
+    const bgSum = bg.data?.reduce((accPB, cvPB) => accPB + cvPB.Max, 0);
+
+    return { spent: sum, budgetted: bgSum };
+  }
+
+  React.useEffect(() => { 
+    console.log('Get totals...', budgetSelected);
+    getAllTotals(budgetSelected).then((n) => {
+        setRunningTotal(n);
+    });
+  }, [budgetSelected]);
+
+
+ 
 
 
   return (
@@ -75,7 +104,12 @@ function BudgetProvider({ children }) {
           expenses,
           setExpenses,
           fetchExpenses
+        },
+        totals: {
+          runningTotal,
+          setRunningTotal
         }
+
       }}
     >
       {children}

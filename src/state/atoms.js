@@ -30,12 +30,19 @@ export const totalBudgetCard = atom({
   default: [{id: 0, total: 0}]
 })
 
+export const totalSpendAndBudgeted = atom({
+  key: "totalSpendAndBudgeted",
+  default: [{spent: 0, budgetted: 0}]
+})
+
 // ---- Selectors
 
 export const totalOfExpenses = selector({
   key: "totalOfExpenses",
   get: ({ get }) => {
     const exp = get(budgetItemIdExpenses);
+
+    if(!exp) return 0
 
     const sumWithInitial = exp.reduce(
       (accumulator, currentValue) => accumulator + currentValue.Amt,

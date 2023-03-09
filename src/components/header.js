@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Container,
   HStack,
   Select,
   Box,
@@ -12,36 +11,30 @@ import {
 import { BudgetContext } from "../state/BudgetContext";
 
 function Header() {
-  const ctx = React.useContext(BudgetContext)
+  const ctx = React.useContext(BudgetContext);
 
   function handleChange(e) {
     ctx.setBudgetSelected(e.target.value);
   }
 
   return (
+    <HStack spacing={5}>
+      <Box mr={10}>
+        <Heading>Budgets</Heading>
+      </Box>
 
-      <HStack>
-        <Box className="App">
-          <Heading>Budgets</Heading>
-        </Box>
+      <Box>
+        <Select onChange={handleChange}>
+          <option value="null">Select Budget</option>
+          {ctx.budgets &&
+            ctx.budgets.map((b) => {
+              return <option value={b.id}>{b.Month}</option>;
+            })}
+        </Select>
+      </Box>
 
-        <Box>
-          <Select onChange={handleChange}>
-            <option value="null">
-              Select Budget
-            </option>
-            {ctx.budgets &&
-              ctx.budgets.map((b) => {
-                return <option value={b.id}>{b.Month}</option>;
-              })}
-          </Select>
-        </Box>
-
-        <ButtonGroup>
-          <Button variant="solid">Add Budget Month</Button>
-        </ButtonGroup>
-      </HStack>
-
+      <Button variant="solid">Add Budget Month</Button>
+    </HStack>
   );
 }
 
