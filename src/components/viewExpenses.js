@@ -19,6 +19,7 @@ import {
   Highlight,
   Box,
   Divider,
+  Td,
 } from "@chakra-ui/react";
 import { BudgetContext } from "../state/BudgetContext";
 import { totalOfExpenses } from "../state/atoms";
@@ -63,11 +64,11 @@ function ViewExpensesDrawer() {
                 {expenses.map((e) => {
                   return (
                     <Tr>
-                      <Th>{e.Name}</Th>
-                      <Th>{e.Description}</Th>
-                      <Th>
+                      <Td>{e.Name}</Td>
+                      <Td>{e.Description}</Td>
+                      <Td>
                         {formatCurrency(e.Amt)}
-                      </Th>
+                      </Td>
                     </Tr>
                   );
                 })}

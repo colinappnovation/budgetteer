@@ -18,7 +18,7 @@ function App() {
           <Header />
         </Box>
       </Container>
-      <Container alignContent={"left"} maxW="md" centerContent mt="6">
+      <Container alignContent={"left"} centerContent mt="6">
         <Grid templateColumns="repeat(2, 1fr)" gap={6}>
           <BudgetItem />
         </Grid>

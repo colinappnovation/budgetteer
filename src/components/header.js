@@ -38,7 +38,7 @@ function Header() {
         </Box>
 
         <ButtonGroup>
-          <Button>Add Budget Month</Button>
+          <Button variant="solid">Add Budget Month</Button>
         </ButtonGroup>
       </HStack>
 

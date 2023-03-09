@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 
 import {
   Card,
@@ -9,21 +9,15 @@ import {
   VStack,
   Button,
   ButtonGroup,
+  Divider,
 } from "@chakra-ui/react";
 
-import {
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-} from "@chakra-ui/react";
+import { ArrowForwardIcon, PlusSquareIcon } from '@chakra-ui/icons'
+
 import { BudgetContext } from "../state/BudgetContext";
 
-import { GridItem } from '@chakra-ui/react'
-import { formatCurrency } from "../utils";
-import BudgetTotal from "./totalBudget";
 
+import BudgetTotal from '../components/totalBudget'
 
 function BudgetItem() {
   const ctx = React.useContext(BudgetContext)
@@ -35,35 +29,23 @@ function BudgetItem() {
 
   return ctx?.items?.map((b) => {
     return (
-      <GridItem>
-        <Card key={b.id} variant="outline" minWidth={500}>
+
+        <Card key={b.id} variant="filled" minWidth={500}>
         <CardHeader>
-          <Heading>{b.Name}</Heading>
+          <Heading size="lg">{b.Name}</Heading>
+          <Divider />
         </CardHeader>
         <CardBody>
-          <Stat>
-            <StatLabel>Spent</StatLabel>
-            <StatNumber>
-              <Suspense fallback="Loading...">
-                <BudgetTotal id={b.id} />
-              </Suspense>
-            </StatNumber>
-            <StatHelpText>
-              <StatArrow type="increase" />
-              50% [Budget: {formatCurrency(b.Max)}]
-            </StatHelpText>
-          </Stat>
+           <BudgetTotal budgetId={b.id} maxAmt={b.Max} /> 
         </CardBody>
-        <CardFooter py="2">
-          <VStack>
+        <CardFooter py="1">
             <ButtonGroup>
-              <Button>Add Expense</Button>
-              <Button data-id={b.id} data-name={b.Name} onClick={handleClick}>View Expenses</Button>
-            </ButtonGroup>
-          </VStack>
+              <Button leftIcon={<PlusSquareIcon/>}>Add Expense</Button>
+              <Button rightIcon={<ArrowForwardIcon />} data-id={b.id} data-name={b.Name} onClick={handleClick}>View Expenses</Button>
+            </ButtonGroup>         
         </CardFooter>
       </Card>
-    </GridItem>
+ 
     )
   });
 }
