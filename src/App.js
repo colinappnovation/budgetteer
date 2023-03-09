@@ -8,11 +8,13 @@ import Header from "../src/components/header";
 import BudgetItem from "../src/components/BudgetItem";
 
 import ViewExpensesDrawer from "./components/viewExpenses";
+import AddExpense from "./components/addExpense";
 
 function App() {
   return (
     <>
       <ViewExpensesDrawer />
+      <AddExpense />
       <Container mt={6}>
         <Box borderRadius="md" borderWidth="1px" padding={3}>
           <Header />

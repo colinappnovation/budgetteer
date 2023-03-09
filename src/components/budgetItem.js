@@ -6,7 +6,6 @@ import {
   CardBody,
   CardFooter,
   Heading,
-  VStack,
   Button,
   ButtonGroup,
   Divider,
@@ -27,6 +26,11 @@ function BudgetItem() {
     ctx.drawer.onOpen()
   }
 
+  function handleClickExpenseAdd(e) { 
+    ctx.budgetItem.setItemId({ id: e.target.dataset.id, name: e.target.dataset.name})
+    ctx.modal.onOpenExpense()
+  }
+
   return ctx?.items?.map((b) => {
     return (
 
@@ -40,7 +44,7 @@ function BudgetItem() {
         </CardBody>
         <CardFooter py="1">
             <ButtonGroup>
-              <Button leftIcon={<PlusSquareIcon/>}>Add Expense</Button>
+              <Button leftIcon={<PlusSquareIcon/>} data-id={b.id} data-name={b.Name} onClick={handleClickExpenseAdd}>Add Expense</Button>
               <Button rightIcon={<ArrowForwardIcon />} data-id={b.id} data-name={b.Name} onClick={handleClick}>View Expenses</Button>
             </ButtonGroup>         
         </CardFooter>

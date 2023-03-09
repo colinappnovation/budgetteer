@@ -18,6 +18,8 @@ function BudgetProvider({ children }) {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const { isOpen: isOpenExpense, onOpen: onOpenExpense, onClose: onCloseExpense } = useDisclosure();
+
   const fetchBudgetData = async (id = 0) => {
     const data = await getBudgetItemsForBudgetMonth(id);
     return data;
@@ -61,6 +63,11 @@ function BudgetProvider({ children }) {
           isOpen,
           onOpen,
           onClose
+        },
+        modal: {
+          isOpenExpense,
+          onOpenExpense,
+          onCloseExpense
         },
         budgetItem: {
           currentBudgetItem: itemId,
