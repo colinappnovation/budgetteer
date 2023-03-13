@@ -1,20 +1,18 @@
 import React from "react";
-import {
-  HStack,
-  Select,
-  Box,
-  Heading,
-  Button,
-  ButtonGroup,
-} from "@chakra-ui/react";
+import { HStack, Select, Box, Heading, Button } from "@chakra-ui/react";
 
-import { BudgetContext } from "../state/BudgetContext";
+import { store, monthSelected } from "../state/store";
+import { useGetMonthsQuery } from "../server/apiSlice";
 
 function Header() {
-  const ctx = React.useContext(BudgetContext);
-
   function handleChange(e) {
-    ctx.setBudgetSelected(e.target.value);
+    store.dispatch(monthSelected(e.target.value));
+  }
+
+  const { data, error, isLoading } = useGetMonthsQuery();
+
+  if(error) {
+    return <div>{error.message}</div>
   }
 
   return (
@@ -26,9 +24,10 @@ function Header() {
       <Box>
         <Select onChange={handleChange}>
           <option value="null">Select Budget</option>
-          {ctx.budgets &&
-            ctx.budgets.map((b) => {
-              return <option value={b.id}>{b.Month}</option>;
+          {!isLoading &&
+            data &&
+            data.map((m) => {
+              return <option value={m.id}>{m.Month}</option>;
             })}
         </Select>
       </Box>
