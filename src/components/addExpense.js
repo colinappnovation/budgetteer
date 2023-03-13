@@ -40,12 +40,15 @@ function AddExpense() {
       desc,
       amt,
       id: budgetSelected.id,
-      budgetMonth: ctx.budgetId,
+      mid: ctx.budgetSelected,
     });
     console.log('error 😱', error)
     ctx.modal.onCloseExpense();
   }
 
+
+
+    console.log('beforeIntert', ctx.budgetSelected);
   return (
     <Modal isOpen={isOpenExpense} onClose={onCloseExpense}>
       <ModalOverlay />

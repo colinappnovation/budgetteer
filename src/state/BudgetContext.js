@@ -30,9 +30,9 @@ function BudgetProvider({ children }) {
   };
 
   React.useEffect(() => {
-    console.log('Budget Selected...')
-    fetchBudgetData(budgetSelected).then((d) => setItems(d.data));
-  }, [budgetSelected]);
+      console.log('Budget Selected...' + budgetSelected)
+      fetchBudgetData(budgetSelected).then((d) => setItems(d.data));
+  }, [budgetSelected, setItems]);
 
 
   const fetchData = async () => {
@@ -86,7 +86,7 @@ function BudgetProvider({ children }) {
       value={{
         budgets: budgetMonthItems,
         setBudgetSelected,
-        budgetId: budgetSelected,
+        budgetSelected,
         items,
         drawer: {
           isOpen,
