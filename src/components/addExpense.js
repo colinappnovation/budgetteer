@@ -25,7 +25,7 @@ import { addExpense } from "../server";
 function AddExpense() {
   const ctx = React.useContext(BudgetContext);
 
-  const budgetSelected = ctx.budgetItem.currentBudgetItem;
+ // const budgetSelected = ctx.budgetItem.currentBudgetItem;
 
   const { isOpenExpense, onCloseExpense } = ctx.modal;
 
@@ -35,13 +35,13 @@ function AddExpense() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const { error } = await addExpense({
-      name,
-      desc,
-      amt,
-      id: budgetSelected.id,
-      mid: ctx.budgetSelected,
-    });
+    // const { error } = await addExpense({
+    //   name,
+    //   desc,
+    //   amt,
+    //   id: budgetSelected.id,
+    //   mid: ctx.budgetSelected,
+    // });
     console.log('error 😱', error)
     ctx.modal.onCloseExpense();
   }
@@ -53,7 +53,7 @@ function AddExpense() {
     <Modal isOpen={isOpenExpense} onClose={onCloseExpense}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add an Expense for {budgetSelected.name}</ModalHeader>
+        {/* <ModalHeader>Add an Expense for {budgetSelected.name}</ModalHeader> */}
         <ModalCloseButton />
         <ModalBody>
           <form onSubmit={handleSubmit} id="addExpenseForm">

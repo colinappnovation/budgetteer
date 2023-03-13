@@ -15,26 +15,34 @@ import {
   Tr,
   Th,
   Tbody,
-  Tag,
   Highlight,
   Box,
   Divider,
   Td,
 } from "@chakra-ui/react";
 import { BudgetContext } from "../state/BudgetContext";
-import { totalOfExpenses } from "../state/atoms";
-
-import { useRecoilValue } from 'recoil'
 import { formatCurrency } from "../utils";
+import { useGetExpensesForBudgetAndMonthQuery } from "../server/apiSlice";
+import { useSelector } from "react-redux";
+import { getMonth, getSelectedBudgetItem } from "../state/store";
 
 function ViewExpensesDrawer() {
   const ctx = React.useContext(BudgetContext);
 
-  const {
-    budgetItem: { currentBudgetItem, expenses },
-  } = ctx;
+  const monthId = useSelector(getMonth);
+  const budgetItemSelected = useSelector(getSelectedBudgetItem);
+  const { data, loading } = useGetExpensesForBudgetAndMonthQuery({
+    monthId,
+    budgetId: budgetItemSelected.id,
+  });
 
-  const total = useRecoilValue(totalOfExpenses)
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!data) {
+    return <></>;
+  }
 
   return (
     <Drawer isOpen={ctx.drawer.isOpen} onClose={ctx.drawer.onClose} size="lg">
@@ -44,9 +52,9 @@ function ViewExpensesDrawer() {
         <DrawerHeader>
           <Highlight
             styles={{ px: "2", py: "2", bg: "orange.100" }}
-            query={currentBudgetItem.name}
+            query={budgetItemSelected.title}
           >
-            {renderToString(`Expenses for ${currentBudgetItem.name}`)}
+            {renderToString(`Expenses for ${budgetItemSelected.title}`)}
           </Highlight>
         </DrawerHeader>
 
@@ -61,14 +69,12 @@ function ViewExpensesDrawer() {
                 </Tr>
               </Thead>
               <Tbody>
-                {expenses && expenses.map((e) => {
+                {data.expenses.map((e) => {
                   return (
                     <Tr>
                       <Td>{e.Name}</Td>
                       <Td>{e.Description}</Td>
-                      <Td>
-                        {formatCurrency(e.Amt)}
-                      </Td>
+                      <Td>{formatCurrency(e.Amt)}</Td>
                     </Tr>
                   );
                 })}
@@ -76,9 +82,9 @@ function ViewExpensesDrawer() {
             </Table>
           </TableContainer>
           <Box mt="5">
-            <Divider/>
-              <strong>Total Expenses: {formatCurrency(total)}</strong>
-            <Divider/>
+            <Divider />
+            <strong>Total Expenses: {formatCurrency(data.totalSpent)}</strong>
+            <Divider />
           </Box>
         </DrawerBody>
       </DrawerContent>
